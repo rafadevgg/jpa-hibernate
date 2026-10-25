@@ -1,0 +1,13 @@
+package test.basic;
+
+import infra.DAO;
+import model.basic.Product;
+
+public class NewProduct {
+    public static void main(String[] args) {
+        Product p = new Product("Monitor", 899.99);
+        DAO<Product> dao = new DAO<>(Product.class);
+        dao.insertAtomic(p);
+        dao.close();
+    }
+}
