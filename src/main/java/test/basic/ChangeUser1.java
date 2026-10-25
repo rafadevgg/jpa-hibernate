@@ -1,0 +1,25 @@
+package test.basic;
+
+import model.basic.User;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+public class ChangeUser1 {
+    public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("exercicios-jpa");
+        EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+        User user = em.find(User.class, 7L);
+        user.setName("Leozin");
+        user.setEmail("leozin@gmail.com");
+
+        em.merge(user);
+        em.getTransaction().commit();
+
+        em.close();
+        emf.close();
+    }
+}
