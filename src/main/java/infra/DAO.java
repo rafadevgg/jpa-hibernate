@@ -16,7 +16,7 @@ public class DAO<E> {
         try {
             emf = Persistence.createEntityManagerFactory("exercicios-jpa");
         } catch (Exception e) {
-            // ... Logar Log4j
+            throw new ExceptionInInitializerError(e);
         }
     }
 
@@ -67,6 +67,20 @@ public class DAO<E> {
 
     public List<E> getAll() {
         return this.getAll(10, 0);
+    }
+
+    public List<E> find(String name, Object... params) {
+        TypedQuery<E> query = em.createNamedQuery(name, eClass);
+        for (int i = 0; i < params.length; i += 2) {
+            query.setParameter(params[i].toString(), params[i + 1]);
+        }
+
+        return query.getResultList();
+    }
+
+    public E findOne(String name, Object... params) {
+        List<E> list = find(name, params);
+        return list.isEmpty() ? null : list.get(0);
     }
 
     public void close() {
